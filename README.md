@@ -20,7 +20,7 @@ All data is stored locally using **IndexedDB**, and users can export it to **JSO
 - **Angular CDK (DragDropModule)**
 - **IndexedDB (`idb` library)**
 - **Chrome Extension APIs (Manifest V3)**
-- 
+
 ## Development server
 To start a local development server, run:
 
