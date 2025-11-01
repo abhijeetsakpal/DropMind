@@ -1,0 +1,31 @@
+<div class="bucket-item" 
+     [class.clickable]="item.type === 'link'"
+     (click)="onItemClick()"
+     draggable="true"
+     (dragstart)="onDragStart($event)">
+  <div class="flex justify-between items-start">
+    <div class="flex-1">
+      <div class="item-meta">
+        <span class="type-badge" [class]="getTypeBadgeClass()">
+          {{ item.type }}
+        </span>
+        <span class="created-date">
+          {{ item.createdAt | date:'short' }}
+        </span>
+      </div>
+      <h4 class="font-medium text-sm mb-1">{{ item.title }}</h4>
+      <p class="text-xs text-gray-600 mb-2 line-clamp-2">{{ item.content }}</p>
+      <div class="flex flex-wrap gap-1">
+        <span *ngFor="let tag of item.tags" class="tag">
+          {{ tag }}
+        </span>
+      </div>
+    </div>
+    <button (click)="onCopy($event)" class="copy-btn ml-2" [title]="'Copy ' + item.type">
+      📋
+    </button>
+    <button (click)="onDelete($event)" class="delete-btn ml-2">
+      ✕
+    </button>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "📦 Smart Organizer",
+  "version": "1.0.0",
+  "description": "📦 Organize text, links, and files with drag-and-drop functionality",
+  "permissions": [
+    "contextMenus",
+    "storage",
+    "downloads",
+    "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "📦 Smart Organizer"
+  }
+}

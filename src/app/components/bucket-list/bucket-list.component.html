@@ -1,0 +1,134 @@
+<div class="bucket-list">
+  <div class="header">
+    <div class="header-top">
+      <h1>📦 Smart Organizer</h1>
+      <button class="theme-toggle" (click)="toggleTheme()" [title]="isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+        {{ isDarkMode ? '☀️' : '🌙' }}
+      </button>
+    </div>
+    
+    <!-- Search & Filter -->
+    <div class="search-section">
+      <input [(ngModel)]="searchTerm" 
+             (input)="filterItems()"
+             placeholder="Search items..."
+             class="search-input">
+    </div>
+    
+    <!-- Add Item Toggle -->
+    <button class="add-toggle" (click)="toggleAddForm()">
+      <span class="add-icon">{{ showAddForm ? '−' : '+' }}</span>
+      <span>{{ showAddForm ? 'Hide Form' : 'Add New Item' }}</span>
+    </button>
+    
+    <!-- Add Item Form -->
+    <div class="add-form" [class.collapsed]="!showAddForm">
+      <select [(ngModel)]="newItem.type" (change)="onTypeChange()" class="form-select">
+        <option value="text">Text</option>
+        <option value="link">Link</option>
+        <option value="file">File</option>
+      </select>
+      <input [(ngModel)]="newItem.title" 
+             [placeholder]="getTitlePlaceholder()"
+             class="form-input">
+      
+      <!-- Text Content -->
+      <textarea *ngIf="newItem.type === 'text'" 
+                [(ngModel)]="newItem.content" 
+                placeholder="Enter your text content"
+                class="form-textarea"></textarea>
+      
+      <!-- Link Input -->
+      <input *ngIf="newItem.type === 'link'" 
+             [(ngModel)]="newItem.content" 
+             placeholder="https://example.com"
+             type="url"
+             class="form-input">
+      
+      <!-- File Upload Area -->
+      <div *ngIf="newItem.type === 'file'" 
+           class="file-upload-area"
+           [class.dragover]="isDragOver"
+           [class.has-file]="newItem.content"
+           (dragover)="onDragOver($event)"
+           (dragleave)="onDragLeave($event)"
+           (drop)="onFileDrop($event)"
+           (click)="fileInput.click()">
+        
+        <input #fileInput 
+               type="file" 
+               (change)="onFileSelected($event)"
+               class="file-input-hidden">
+        
+        <div class="file-upload-content">
+          <div *ngIf="!newItem.content" class="upload-placeholder">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">
+              <p class="upload-primary">Drop files here or click to browse</p>
+              <p class="upload-secondary">Supports all file types</p>
+            </div>
+          </div>
+          
+          <div *ngIf="newItem.content" class="file-selected">
+            <div class="file-icon">{{ getFileIcon() }}</div>
+            <div class="file-info">
+              <p class="file-name">{{ newItem.content }}</p>
+              <p class="file-action">Click to change file</p>
+            </div>
+            <button type="button" 
+                    class="file-remove" 
+                    (click)="removeFile($event)">
+              ✕
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <input [(ngModel)]="tagInput" 
+             placeholder="Tags (comma separated)"
+             class="form-input">
+      <button (click)="addItem()" class="add-btn">
+        Add Item
+      </button>
+    </div>
+    
+    <!-- Actions -->
+    <div class="actions">
+      <button (click)="exportJSON()" class="export-btn">
+        Export JSON
+      </button>
+      <button (click)="clearAll()" class="clear-btn">
+        Clear All
+      </button>
+    </div>
+  </div>
+  
+  <!-- Items List -->
+  <div cdkDropList (cdkDropListDropped)="drop($event)" 
+       class="items-list" 
+       [class.expanded]="!showAddForm">
+    <div *ngFor="let item of filteredItems" 
+         cdkDrag
+         class="drag-item">
+      <app-bucket-item [item]="item" 
+                      (delete)="deleteItem($event)">
+      </app-bucket-item>
+    </div>
+  </div>
+  
+  <div *ngIf="filteredItems.length === 0" class="empty-state">
+    <p>No items found</p>
+    <p class="empty-subtitle">Add items using the form above</p>
+  </div>
+  
+  <div class="stats-bar" *ngIf="items.length > 0">
+    <div class="stats-item">
+      <span>📄</span>
+      <span>{{ items.length }} items</span>
+    </div>
+    <div class="stats-item">
+      <span>🔍</span>
+      <span>{{ filteredItems.length }} shown</span>
+    </div>
+  </div>
+</div>

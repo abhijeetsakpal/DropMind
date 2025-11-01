@@ -21,6 +21,10 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.json",
+              "src/background.js",
               {
                 "glob": "**/*",
                 "input": "public"
@@ -29,12 +33,7 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -84,6 +83,10 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/manifest.json",
+              "src/background.js",
               {
                 "glob": "**/*",
                 "input": "public"
@@ -97,5 +100,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "6d3a7da6-b28d-498d-9621-ec6b0d0c517a"
   }
 }
